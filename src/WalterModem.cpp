@@ -44,6 +44,8 @@
  */
 
 #include <WalterDefines.h>
+#include <esp_vfs_fat.h>
+#include <wear_levelling.h>   // for wl_handle_t / WL_INVALID_HANDLE
 
 #ifdef ARDUINO
 #include <Arduino.h>
@@ -3120,7 +3122,7 @@ bool WalterModem::_motaFormatAndMount(void)
   conf.max_files = 1;
   conf.allocation_unit_size = CONFIG_WL_SECTOR_SIZE;
 
-  result = esp_vfs_fat_spiflash_mount_rw_wl("/ffat", "ffat", &conf, &_wl_handle);
+  result = esp_vfs_fat_spiflash_mount("/ffat", "ffat", &conf, &_wl_handle);
   if(result != ESP_OK) {
     ESP_LOGD("WalterModem", "Mount/format FAT partition failed!");
     _wl_handle = WL_INVALID_HANDLE;
@@ -3246,7 +3248,7 @@ void WalterModem::offlineMotaUpgrade(uint8_t* otaBuffer)
     conf.max_files = 1;
     conf.allocation_unit_size = CONFIG_WL_SECTOR_SIZE;
 
-    result = esp_vfs_fat_spiflash_mount_rw_wl("/ffat", "ffat", &conf, &_wl_handle);
+    result = esp_vfs_fat_spiflash_mount("/ffat", "ffat", &conf, &_wl_handle);
     if(result != ESP_OK) {
       ESP_LOGD("WalterModem", "Mount FAT partition failed!");
       _wl_handle = WL_INVALID_HANDLE;
