@@ -4,3 +4,4 @@
 **/private/
 **/.vscode/
 .history
+.DS_Store

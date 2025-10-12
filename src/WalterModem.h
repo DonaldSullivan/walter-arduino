@@ -400,7 +400,7 @@ CONFIG_UINT8(SPI_SECTORS_PER_BLOCK, 16)
 #include <esp_partition.h>
 #include <esp_vfs.h>
 #include <esp_vfs_fat.h>
-#include <spi_flash_mmap.h>
+#include "wm_compat_spi_flash.h"
 
 #endif
 
