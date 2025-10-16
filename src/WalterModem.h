@@ -4441,7 +4441,7 @@ public:
            WalterModemHttpSendCmd httpSendCmd = WALTER_MODEM_HTTP_SEND_CMD_POST,
            WalterModemHttpPostParam httpPostParam = WALTER_MODEM_HTTP_POST_PARAM_UNSPECIFIED,
            char* contentTypeBuf = NULL, uint16_t contentTypeBufSize = 0, WalterModemRsp* rsp = NULL,
-           walterModemCb cb = NULL, void* args = NULL);
+           walterModemCb cb = NULL, void* args = NULL, const char* extraHeaderLine = NULL);
 
   /**
    * @brief Retrieve the response on an earlier HTTP request.
