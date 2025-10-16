@@ -44,6 +44,7 @@
  */
 
 #include <WalterDefines.h>
+#include <cstring>
 #if CONFIG_WALTER_MODEM_ENABLE_HTTP
 #pragma region PRIVATE_METHODS
 void WalterModem::_dispatchEvent(WalterModemHttpEvent event, int profileId)
@@ -198,7 +199,7 @@ bool WalterModem::httpSend(uint8_t profileId, const char* uri, uint8_t* data, ui
                            WalterModemHttpSendCmd httpSendCmd,
                            WalterModemHttpPostParam httpPostParam, char* contentTypeBuf,
                            uint16_t contentTypeBufSize, WalterModemRsp* rsp, walterModemCb cb,
-                           void* args)
+                           void* args, const char* extraHeaderLine)
 {
   if(profileId >= WALTER_MODEM_MAX_HTTP_PROFILES) {
     _returnState(WALTER_MODEM_STATE_NO_SUCH_PROFILE);
@@ -227,6 +228,10 @@ bool WalterModem::httpSend(uint8_t profileId, const char* uri, uint8_t* data, ui
     stringsBuffer->size +=
         sprintf((char*) stringsBuffer->data, "AT+SQNHTTPSND=%d,%d,\"%s\",%d,\"%d\"", profileId,
                 httpSendCmd, uri, dataSize, httpPostParam);
+  }
+if(extraHeaderLine != NULL && strlen(extraHeaderLine) > 0) {
+    stringsBuffer->size +=
+        sprintf((char*) stringsBuffer->data + stringsBuffer->size, ",\"%s\"", extraHeaderLine);
   }
 
   _runCmd(arr((const char*) stringsBuffer->data), "OK", rsp, cb, args, completeHandler,
